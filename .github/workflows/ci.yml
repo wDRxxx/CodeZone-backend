@@ -42,7 +42,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSHKEY }}
-          source: "docker-compose.yaml,migration.Dockerfile,prod.env"
+          source: "docker-compose.yaml,Dockerfile,prod.env"
           target: /home/${{ secrets.SSH_USERNAME }}/codezone/backend
 
       - name: Deploy via SSH connection
