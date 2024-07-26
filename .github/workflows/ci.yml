@@ -42,7 +42,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSHKEY }}
-          source: "docker-compose.yaml,Dockerfile,prod.env"
+          source: "docker-compose-prod.yaml,Dockerfile,prod.env"
           target: /home/${{ secrets.SSH_USERNAME }}/codezone/backend
 
       - name: Deploy via SSH connection
@@ -60,4 +60,4 @@ jobs:
             docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY }}
             
             # Run a new container from docker-compose
-            TAG_NAME=$TAG_NAME docker compose -f ./codezone/backend/docker-compose.yaml --env-file ./codezone/backend/prod.env up -d --build --force-recreate
+            TAG_NAME=$TAG_NAME REGISTRY=${{ secrets.REGISTRY }} docker compose -f ./codezone/backend/docker-compose-prod.yaml --env-file ./codezone/backend/prod.env up -d --build --force-recreate
