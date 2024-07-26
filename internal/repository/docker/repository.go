@@ -8,14 +8,14 @@ import (
 	"fmt"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
+	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
-	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -56,8 +56,8 @@ func (r *repo) DownloadImages(ctx context.Context) {
 				wg.Done()
 			}()
 
-			out, err := r.cli.ImagePull(ctx, img.ImageWithHost(), image.PullOptions{})
-			io.Copy(os.Stdout, out)
+			_, err := r.cli.ImagePull(ctx, img.ImageWithHost(), image.PullOptions{})
+			//io.Copy(os.Stdout, out)
 
 			if err != nil {
 				log.Printf("error downloading %s image: %v\n", img.Title, err)
@@ -81,38 +81,38 @@ func (r *repo) RunContainer(ctx context.Context, info *models.Info) (string, err
 		return "", ErrUnsupported
 	}
 
-	dir, err := os.MkdirTemp("", "tmp-*")
+	file, err := os.CreateTemp("", fmt.Sprintf("main-*.%s", img.FileExt))
 	if err != nil {
 		return "", err
 	}
-	defer os.RemoveAll(dir)
+	defer os.Remove(file.Name())
 
-	file, err := os.CreateTemp(dir, fmt.Sprintf("main-*.%s", img.FileExt))
-	if err != nil {
-		return "", err
-	}
 	_, err = file.Write([]byte(info.Code))
 	if err != nil {
 		return "", err
 	}
 
-	m := mount.Mount{
-		Type:   mount.TypeBind,
-		Source: dir,
-		Target: "/app",
-	}
-
-	filename := file.Name()[strings.LastIndex(file.Name(), "\\")+1:]
+	filename := file.Name()[strings.LastIndex(filepath.ToSlash(file.Name()), "/")+1:]
 	resp, err := r.cli.ContainerCreate(
 		ctx,
 		&container.Config{
 			Image: img.ImageWithHost(),
 			Cmd:   img.Cmd(filename),
-		}, &container.HostConfig{
-			Mounts: []mount.Mount{m},
-		}, nil, nil, containerName,
+		}, nil, nil, nil, containerName,
 	)
+	if err != nil {
+		return "", err
+	}
 
+	arch, err := archive.Tar(file.Name(), archive.Gzip)
+	if err != nil {
+		return "", err
+	}
+
+	err = r.cli.CopyToContainer(ctx, resp.ID, "/tmp", arch, container.CopyToContainerOptions{
+		AllowOverwriteDirWithFile: true,
+		CopyUIDGID:                true,
+	})
 	if err != nil {
 		return "", err
 	}

@@ -20,7 +20,7 @@ func getActualImages() map[string]*models.Image {
 		Host:    host,
 		FileExt: "py",
 		Cmd: func(filename string) []string {
-			return []string{"python", fmt.Sprintf("/app/%s", filename)}
+			return []string{"python", fmt.Sprintf("/tmp/%s", filename)}
 		},
 	}
 	images["go"] = &models.Image{
@@ -29,7 +29,7 @@ func getActualImages() map[string]*models.Image {
 		Host:    host,
 		FileExt: "go",
 		Cmd: func(filename string) []string {
-			return []string{"go", "run", fmt.Sprintf("/app/%s", filename)}
+			return []string{"go", "run", fmt.Sprintf("/tmp/%s", filename)}
 		},
 	}
 	images["c++"] = &models.Image{
@@ -38,7 +38,7 @@ func getActualImages() map[string]*models.Image {
 		Host:    host,
 		FileExt: "cpp",
 		Cmd: func(filename string) []string {
-			return []string{"sh", "-c", fmt.Sprintf("g++ /app/%s -o main && ./main", filename)}
+			return []string{"sh", "-c", fmt.Sprintf("g++ /tmp/%s -o main && ./main", filename)}
 		},
 	}
 	images["c#"] = &models.Image{
@@ -47,7 +47,7 @@ func getActualImages() map[string]*models.Image {
 		Host:    host,
 		FileExt: "cs",
 		Cmd: func(filename string) []string {
-			return []string{"sh", "-c", fmt.Sprintf("mcs -out:main.exe /app/%s && mono main.exe", filename)}
+			return []string{"sh", "-c", fmt.Sprintf("mcs -out:main.exe /tmp/%s && mono main.exe", filename)}
 		},
 	}
 	images["javascript"] = &models.Image{
@@ -56,7 +56,7 @@ func getActualImages() map[string]*models.Image {
 		Host:    host,
 		FileExt: "js",
 		Cmd: func(filename string) []string {
-			return []string{"node", fmt.Sprintf("/app/%s", filename)}
+			return []string{"node", fmt.Sprintf("/tmp/%s", filename)}
 		},
 	}
 	images["rust"] = &models.Image{
@@ -65,7 +65,7 @@ func getActualImages() map[string]*models.Image {
 		Host:    host,
 		FileExt: "rs",
 		Cmd: func(filename string) []string {
-			return []string{"sh", "-c", fmt.Sprintf("rustc /app/%s -o main && ./main", filename)}
+			return []string{"sh", "-c", fmt.Sprintf("rustc /tmp/%s -o main && ./main", filename)}
 		},
 	}
 	// FIXME: will work only if main class is "Main"
@@ -75,7 +75,7 @@ func getActualImages() map[string]*models.Image {
 		Host:    host,
 		FileExt: "java",
 		Cmd: func(filename string) []string {
-			return []string{"sh", "-c", fmt.Sprintf("javac /app/%s && java -cp /app Main", filename)}
+			return []string{"sh", "-c", fmt.Sprintf("javac /tmp/%s && java -cp /tmp Main", filename)}
 		},
 	}
 

@@ -21,5 +21,5 @@ type RunV1Request struct {
 // CheckV1Response - api v1 check route response
 type CheckV1Response struct {
 	Status string `json:"status"`
-	Result string `json:"result"`
+	Result string `json:"result,omitempty"`
 }

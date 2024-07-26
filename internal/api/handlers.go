@@ -40,7 +40,7 @@ func (s *server) run(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		utils.PrintErrWithStack(err)
 		if errors.Is(err, docker.ErrUnsupported) {
-			utils.WriteJSONError(err, w, http.StatusInternalServerError)
+			utils.WriteJSONError(err, w, http.StatusNotFound)
 			return
 		}
 
