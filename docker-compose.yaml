@@ -6,5 +6,6 @@ services:
     restart: on-failure
     ports:
       - "${HTTP_PORT}:${HTTP_PORT}"
+      - "${METRICS_PROMETHEUS_PORT}:${METRICS_PROMETHEUS_PORT}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
