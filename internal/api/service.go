@@ -13,12 +13,14 @@ type ApiServer interface {
 type server struct {
 	mux        http.Handler
 	apiService service.ApiV1Service
+	origins    []string
 }
 
 // NewApiServer creates new ApiServer
-func NewApiServer(apiService service.ApiV1Service) ApiServer {
+func NewApiServer(apiService service.ApiV1Service, origins []string) ApiServer {
 	serv := &server{
 		apiService: apiService,
+		origins:    origins,
 	}
 	serv.setRoutes()
 

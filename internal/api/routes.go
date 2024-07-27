@@ -8,7 +8,8 @@ func (s *server) setRoutes() {
 	mux := chi.NewRouter()
 
 	// middlewares
-	mux.Use(enableCORS)
+	mux.Use(s.enableCORS)
+	mux.Use(s.enableMetrics)
 
 	// routes
 	mux.Route("/api", func(mux chi.Router) {

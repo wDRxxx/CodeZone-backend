@@ -11,5 +11,5 @@ CodeZone can be tested [here](http://95.174.94.98) and fronted repo can be found
 
 ### Without docker
 1. `go mod download`
-2. create and configure `.env` based on `prod.env`
+2. create and configure `.env` based on `prod.env` (set HTTP_ORIGINS to "*")
 3. `go run ./cmd/api`

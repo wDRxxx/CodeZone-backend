@@ -15,7 +15,8 @@ import (
 
 // serviceProvider contains all necessary for api to work correctly
 type serviceProvider struct {
-	httpConfig config.HTTPConfig
+	httpConfig    config.HTTPConfig
+	metricsConfig config.MetricsConfig
 
 	apiServer apiServer.ApiServer
 
@@ -42,10 +43,24 @@ func (s *serviceProvider) HTTPConfig() config.HTTPConfig {
 	return s.httpConfig
 }
 
+// MetricsConfig creates if not created and returns MetricsConfig
+func (s *serviceProvider) MetricsConfig() config.MetricsConfig {
+	if s.metricsConfig == nil {
+		cfg, err := config.NewMetricsConfig()
+		if err != nil {
+			log.Fatalf("error creating metrics config: %v\n", err)
+		}
+
+		s.metricsConfig = cfg
+	}
+
+	return s.metricsConfig
+}
+
 // ApiServer creates if not created and returns ApiServer
 func (s *serviceProvider) ApiServer(ctx context.Context) apiServer.ApiServer {
 	if s.apiServer == nil {
-		s.apiServer = apiServer.NewApiServer(s.ApiV1Service(ctx))
+		s.apiServer = apiServer.NewApiServer(s.ApiV1Service(ctx), s.HTTPConfig().Origins())
 	}
 
 	return s.apiServer

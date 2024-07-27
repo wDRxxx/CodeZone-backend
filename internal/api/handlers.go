@@ -1,6 +1,7 @@
 package api
 
 import (
+	"codeZone/internal/metrics"
 	"codeZone/internal/models"
 	"codeZone/internal/repository/docker"
 	"codeZone/internal/utils"
@@ -30,6 +31,9 @@ func (s *server) home(w http.ResponseWriter, r *http.Request) {
 func (s *server) run(w http.ResponseWriter, r *http.Request) {
 	var req models.RunV1Request
 	err := utils.ReadJSON(w, r, &req)
+
+	metrics.IncRunRequestCounter(req.Language)
+
 	if err != nil {
 		utils.PrintErrWithStack(err)
 		utils.WriteJSONError(errInternal, w, http.StatusInternalServerError)
