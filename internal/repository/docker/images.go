@@ -23,6 +23,7 @@ func getActualImages() map[string]*models.Image {
 			return []string{"python", fmt.Sprintf("/tmp/%s", filename)}
 		},
 	}
+
 	images["go"] = &models.Image{
 		Title:   "golang",
 		Tag:     "1.22.5-alpine",
@@ -32,6 +33,7 @@ func getActualImages() map[string]*models.Image {
 			return []string{"go", "run", fmt.Sprintf("/tmp/%s", filename)}
 		},
 	}
+
 	images["c++"] = &models.Image{
 		Title:   "frolvlad/alpine-gxx",
 		Tag:     "latest",
@@ -41,6 +43,7 @@ func getActualImages() map[string]*models.Image {
 			return []string{"sh", "-c", fmt.Sprintf("g++ /tmp/%s -o main && ./main", filename)}
 		},
 	}
+
 	images["c#"] = &models.Image{
 		Title:   "mono",
 		Tag:     "6.12",
@@ -50,6 +53,7 @@ func getActualImages() map[string]*models.Image {
 			return []string{"sh", "-c", fmt.Sprintf("mcs -out:main.exe /tmp/%s && mono main.exe", filename)}
 		},
 	}
+
 	images["javascript"] = &models.Image{
 		Title:   "node",
 		Tag:     "22-alpine",
@@ -59,6 +63,7 @@ func getActualImages() map[string]*models.Image {
 			return []string{"node", fmt.Sprintf("/tmp/%s", filename)}
 		},
 	}
+
 	images["rust"] = &models.Image{
 		Title:   "rust",
 		Tag:     "1.79.0-alpine",
@@ -68,6 +73,7 @@ func getActualImages() map[string]*models.Image {
 			return []string{"sh", "-c", fmt.Sprintf("rustc /tmp/%s -o main && ./main", filename)}
 		},
 	}
+
 	// FIXME: will work only if main class is "Main"
 	images["java"] = &models.Image{
 		Title:   "openjdk",
