@@ -59,7 +59,7 @@ jobs:
             TAG_NAME=$(echo $GITHUB_SHA | head -c7)
 
             # Login into Registry
-            docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY }}
+            sudo docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY }}
             
             # Run a new container from docker-compose
             sudo TAG_NAME=$TAG_NAME REGISTRY=${{ secrets.REGISTRY }} docker compose -f ./codezone/backend/docker-compose-prod.yaml --env-file ./codezone/backend/prod.env up -d --build --force-recreate
