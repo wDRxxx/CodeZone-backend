@@ -5,6 +5,9 @@ CodeZone - online compiler which executes user's code (for now without any input
 
 CodeZone can be tested [here](http://95.174.94.98) and fronted repo can be found [here](https://github.com/wDRxxx/CodeZone-frontend)
 
+## Mini demo:
+<img src="assets/CodeZone-demo.gif" alt="CodeZone Demo" height="50%"/>
+
 ## How to run
 ### Using docker
 1. `docker-compose up -d --build`
