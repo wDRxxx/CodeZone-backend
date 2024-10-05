@@ -4,7 +4,7 @@ Backend for CodeZone online compiler
 
 CodeZone - online compiler which executes user's code (for now without any inputs) in docker containers.
 
-CodeZone can be tested [here](https://wdrxxx.online) and fronted repo can be found [here](https://github.com/wDRxxx/CodeZone-frontend)
+CodeZone can be tested [here](https://codezone.wdrxxx.online/) and fronted repo can be found [here](https://github.com/wDRxxx/CodeZone-frontend)
 
 ## Mini demo:
 
