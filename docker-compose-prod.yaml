@@ -3,6 +3,7 @@ version: '3'
 services:
   server:
     image: ${REGISTRY}/codezone-backend:${TAG_NAME}
+    container_name: codezone_backend
     restart: on-failure
     ports:
       - "${HTTP_PORT}:${HTTP_PORT}"
